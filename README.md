@@ -19,7 +19,7 @@ While a classifier has to be tranformation and rotation invariant, a localizer h
   The BR block iproves the segemetation near the boundaries of objects, where segmentation is less like a pure classification problem. It's design is inspired by that of ResNets and is basically a parallel brach of Conv+ReLu, folowed by another conv layer added to the input.
  
  ## Training 
-   A pretrained ResNet-50 is used and is later fine-tuned. This works as medical images have features that resemble that of other natural images eg. nucleus looks similar to a ball.
+   A pretrained ResNet-50 is used and is later fine-tuned. The rationale being that while medical images are vastly different from natural images, the ResNet is a good feature extractor (eg. edges, blobs, etc.) It is further augmented by the fact that many components in a medical image have features that resemble that of natural images eg. nucleui looks similar to balls.
  
     Refer to http://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006 for the ResNet50 Architecture and 
 
