@@ -41,13 +41,16 @@ class FCN_GCN(nn.Module):
         self.br8 = BR(num_classes)
         self.br9 = BR(num_classes)
 
-    def _classifier(self, c):
+    def _classifier(self, in_c):
         return nn.Sequential(
-            nn.Conv2d(c,c,3,padding=1,bias=False),
-            
+            nn.Conv2d(in_c,in_c,3,padding=1,bias=False),
+            nn.BatchNorm2d(in_c/2),
+            nn.ReLU(inplace=True),
+            nn.Dropout(.1),
+            nn.Conv2d(in_c/2, self.num_classes, 1),
 
             )    
-        
+
     def forward(self,x):
         input = x
         x = self.conv1(x)
@@ -75,3 +78,5 @@ class FCN_GCN(nn.Module):
         gc_fm1 = F.Upsample(self.br8(gc_fm1), scale_factor=2, mode='bilinear', align_corners=True)
 
         out = F.Upsample(self.br9(gc_fm1), input.size()[2:], mode='bilinear', align_corners=True)
+
+        return out
