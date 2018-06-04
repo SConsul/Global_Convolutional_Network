@@ -18,4 +18,5 @@ While a classifier has to be tranformation and rotation invariant, a localizer h
    A pretrained ResNet-50 is used and is later fine-tuned. This works as medical images have features that resemble that of other natural images eg. nucleus looks similar to a ball.
  
  Refer to http://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006 for the ResNet50 Architecture
- and https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py for the torchvision.model code
+ and 
+ https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py for the torchvision.model code
