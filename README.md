@@ -21,6 +21,6 @@ While a classifier has to be tranformation and rotation invariant, a localizer h
  ## Training 
    A pretrained ResNet-50 is used and is later fine-tuned. The rationale being that while medical images are vastly different from natural images, the ResNet is a good feature extractor (eg. edges, blobs, etc.) It is further augmented by the fact that many components in a medical image have features that resemble that of natural images eg. nucleui looks similar to balls.
  
-    Refer to http://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006 for the ResNet50 Architecture and 
+Refer to http://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006 for the ResNet50 Architecture and 
 
-    https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py for the torchvision.model code
+https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py for the torchvision.model code
