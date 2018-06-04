@@ -53,4 +53,25 @@ class FCN_GCN(nn.Module):
         x = self.conv1(x)
         x = self.bn0(x)
         x = self.relu(x)
-        
+        convA_x = x
+        x = self.maxpool(x)
+        pooled_x = x
+
+        fm1 = self.layer1(x) 
+        fm2 = self.layer2(fm1)
+        fm3 = self.layer3(fm2)
+        fm4 = self.layer4(fm3)
+
+        gc_fm1 = self.br1(self.gcn1(fm1))
+        gc_fm2 = self.br2(self.gcn2(fm2))
+        gc_fm3 = self.br3(self.gcn3(fm3))
+        gc_fm4 = self.br4(self.gcn4(fm4))
+
+        gc_fm4 = F.Upsample(gc_fm4, fm3.size()[2:], mode='bilinear', align_corners=True)
+        gc_fm3 = F.Upsample(self.br5(gc_fm3 + gc_fm4), fm2.size()[2:], mode='bilinear', align_corners=True)
+        gc_fm2 = F.Upsample(self.br6(gc_fm2 + gc_fm3), fm1.size()[2:], mode='bilinear', align_corners=True)
+        gc_fm1 = F.Upsample(self.br7(gc_fm1 + gc_fm2), pooled_x.size()[2:], mode='bilinear', align_corners=True)
+
+        gc_fm1 = F.Upsample(self.br8(gc_fm1), scale_factor=2, mode='bilinear', align_corners=True)
+
+        out = F.Upsample(self.br9(gc_fm1), input.size()[2:], mode='bilinear', align_corners=True)
