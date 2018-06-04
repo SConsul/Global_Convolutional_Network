@@ -1,5 +1,5 @@
 # Global_Convolutional_Network
-Pytorch implementation of GCN architecture for sematic segmentation
+Pytorch implementation of GCN architecture for sematic segmentation[[pdf]](https://arxiv.org/pdf/1703.02719.pdf)
 
 The Global Convolution Network or GCN is an architecture proposed for the task of segmenting images. A segmenter has to perform 2 tasks: classification as well as localization. This has an inherent challenge as both tasks have inherent diametrically opposite demands.
 While a classifier has to be tranformation and rotation invariant, a localizer has to sensitive to the same. The GCN architecture finds a balance of the two demands with the following properties:
