@@ -1,5 +1,4 @@
-# Global_Convolutional_Network
-Pytorch implementation of GCN architecture for sematic segmentation
+# Global Convolutional Network
 
 GCN Architecture is proposed in the paper "Large Kernel Matters ——
 Improve Semantic Segmentation by Global Convolutional Network"[[pdf]](https://arxiv.org/pdf/1703.02719.pdf)
