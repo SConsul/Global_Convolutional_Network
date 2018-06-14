@@ -14,7 +14,7 @@ While a classifier has to be tranformation and rotation invariant, a localizer h
  To limit the number of parameters, while maintaining a large kernel, large symmetric separable filters are used.
   ### GCN Block
   The GCN Block is essentially a kx1 followed by 1xk convolution summed with a parallely computed 1xk followed by kx1 convolution. NOTE: the blocks are acting on feature maps and so channel width is larger than 3
-  ### Boundarty Refinement Block 
+  ### Boundary Refinement Block 
   The BR block iproves the segemetation near the boundaries of objects, where segmentation is less like a pure classification problem. It's design is inspired by that of ResNets and is basically a parallel brach of Conv+ReLu, folowed by another conv layer added to the input.
  
  ## Training 
