@@ -23,3 +23,30 @@ While a classifier has to be tranformation and rotation invariant, a localizer h
 Refer to http://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006 for the ResNet50 Architecture and 
 
 https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py for the torchvision.model code
+
+### Loss Function
+ 
+A linear combination of Soft Dice Loss, Soft Inverse Dice Loss, and Binary Cross-Entropy Loss (with logits) is used to train the model end-to-end. The best performance was obtained by weighing the three criteria at 50:25:25 (respectively)
+
+#### Binary Cross-Entropy Loss (with logits)
+
+This is calculated by passing the output of the network through a sigmoid activation before applying cross-entropy loss.
+
+> The sigmoid and cross entropy calculations  are done in one class to exploit the log-sum-exp trick for greater numerical stability (as compared to 
+sequentially applying sigmoid activation and then using vanilla BCE).
+
+<!---$\ell(x, y) = L = \{l_1,\dots,l_N\}^\top$ --->
+
+$$l_n = - w_n \left[ t_n \cdot \log \sigma(x_n) + (1 - t_n) \cdot \log (1 - \sigma(x_n)) \right],$$
+
+$$ L(x,y) = \sum_{i=1}^{N}l_i$$
+
+#### Soft Dice Loss
+ 
+Dice Loss gives a measure of how accurate the overlap of the mask and ground truth is.
+The Sørensen–Dice coefficient is calculated as: $\frac{2. X\cap Y}{|X| + |Y|} = \frac{2. TP}{2. TP + FP + FN}$  and the Dice Loss is simply 1 - Dice coeff.
+For Soft version of the loss, the output of the network is passed through a sigmoid before standard dice loss is evaluated.
+
+ #### Soft Inverse Dice Loss
+
+Inverse Dice loss checks for how accurately the background is masked. This penalizes the excess areas in the predicted mask. It is found by inverting the output before using the soft dice loss. 
