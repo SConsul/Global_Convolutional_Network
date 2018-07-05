@@ -5,7 +5,8 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 from torch.autograd import Variable
 from build_model import FCN_GCN
-
+import os
+import csv
 
 class SoftDiceLoss(nn.Module):
     def __init__(self, weight=None, size_average=True):
@@ -49,7 +50,7 @@ from data_loader import LungSegTest
 train_set = LungSeg(transforms = transformations_train)  
 test_set = LungSegTest(transforms = transformations_test)  
 batch_size = 1 
-num_epochs = 50
+num_epochs = 30
     
 class Average(object):
     def __init__(self):
@@ -71,13 +72,15 @@ def train():
     cuda = torch.cuda.is_available()
     net = FCN_GCN(1)
     net.load_state_dict(torch.load('cp.pth'))
-    
+
     if cuda:
         net = net.cuda()
     criterion1 = nn.BCEWithLogitsLoss().cuda()
     criterion2 = SoftDiceLoss().cuda()
     criterion3 = SoftInvDiceLoss().cuda()
-    optimizer = torch.optim.Adam(net.parameters(), lr=2e-4)
+
+    optimizer = torch.optim.Adam(net.parameters(), lr=4e-5)
+    #scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[10,20], gamma=0.5)
 
     print("preparing training data ...")
     train_loader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
@@ -88,6 +91,9 @@ def train():
     for epoch in range(num_epochs):
         train_loss = Average()
         net.train()
+        
+        #scheduler.step()
+
         for i, (images, masks) in enumerate(train_loader):
             images = Variable(images)
             masks = Variable(masks)
@@ -97,12 +103,13 @@ def train():
 
             optimizer.zero_grad()
             outputs = net(images)
-            loss = criterion1(outputs, masks) + criterion2(outputs, masks) + criterion3(outputs, masks)
+            loss = 0.4*criterion1(outputs, masks) + 0.4*criterion2(outputs, masks)  + 0.2*criterion3(outputs, masks)
             loss.backward()
             optimizer.step()
             train_loss.update(loss.item(), images.size(0))
 
         val_loss = Average()
+        val_loss_dice = Average()
         net.eval()
         for images, masks in test_loader:
             images = Variable(images)
@@ -112,12 +119,14 @@ def train():
                 masks = masks.cuda()
 
             outputs = net(images)
-            vloss = criterion2(outputs, masks)
+            vloss = 0.4*criterion1(outputs, masks) + 0.4*criterion2(outputs, masks)  + 0.2*criterion3(outputs, masks)
+            vloss_dice = criterion2(outputs, masks)
             val_loss.update(vloss.item(), images.size(0))
+            val_loss_dice.update(vloss_dice.item(), images.size(0))
 
-        print("Epoch {}, Loss: {}, Validation Loss: {}".format(epoch+51, train_loss.avg, val_loss.avg))
-    
-    torch.save(net.state_dict(), 'cp.pth')    
+        print("Epoch {}/{}, Loss: {}, Validation Loss: {}, Validation Dice Loss: {}".format(epoch+1,num_epochs, train_loss.avg, val_loss.avg, val_loss_dice.avg))
+       
+        torch.save(net.state_dict(), 'Weights_221/cp_{}_{}.pth'.format(epoch+1, val_loss_dice.avg))    
             
     return net
 
