@@ -78,7 +78,7 @@ class FCN_GCN(nn.Module):
             nn.Conv2d(in_c,in_c,3,padding=1,bias=False),
             nn.BatchNorm2d(in_c/2),
             nn.ReLU(inplace=True),
-            nn.Dropout(.5),
+            #nn.Dropout(.5),
             nn.Conv2d(in_c/2, self.num_classes, 1),
 
             )    
