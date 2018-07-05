@@ -35,8 +35,8 @@ The entire pipeline of this architecture is visualized below:
 
 ![enter image description here](https://lh3.googleusercontent.com/jma3XKGwaLnS4-0TYajAsD8gNYg0_uJ0W81Xj5ssOjub3DdEhkjxhrcUEAoTJEyZ6_l7VBCmPybM "ResNet-GCN Pipeline")
 ### GCN Block
-  
-  The GCN Block is essentially a kx1 followed by 1xk convolution summed with a parallely computed 1xk followed by kx1 convolution. NOTE: the blocks are acting on feature maps and so channel width is larger than 3
+  The GCN Block is essentially a kx1 followed by 1xk convolution summed with a parallely computed 1xk followed by kx1 convolution.  This results in a large kxk kernel with dense connections.
+  NOTE: the blocks are acting on feature maps and so channel width is larger than 3
   
 ### Boundary Refinement Block 
   
@@ -54,7 +54,7 @@ Refer to http://ethereon.github.io/netscope/#/gist/db945b393d40bfa26006 for the 
 
 ### Loss Function
  
-A linear combination of Soft Dice Loss, Soft Inverse Dice Loss, and Binary Cross-Entropy Loss (with logits) is used to train the model end-to-end. The best performance was obtained by weighing the three criteria at 50:25:25 (respectively)
+A linear combination of Soft Dice Loss, Soft Inverse Dice Loss, and Binary Cross-Entropy Loss (with logits) is used to train the model end-to-end. The best performance was obtained by weighing the three criteria at 0.25:0.5:0.25 (respectively).
 
 #### Binary Cross-Entropy Loss (with logits)
 
@@ -103,26 +103,29 @@ As mentioned before, the Inverse dice index is obtained by inverting the masks a
 >Due to the relatively smaller area of lung compared to the background, Inverse Dice score is large for every model.
 
  ## Results 
- 
-Mean IoU: `0.8324080228352543`
-Mean Dice: `0.9079911417885767`
-Mean Inv. Dice: `0.9709436709398065`
+After 35 epochs of training, with learning rate = $10^{-3}$, scheduled to decrease by a factor of 5 after $15^{th}$ and $30^{th}$ epoch.
 
+The model performed as follows:
 
-![
-](https://lh3.googleusercontent.com/REyIVFOEuD7Q3sUQxUm0UcjQT8t_n6qDPrxIULjb4m2pC1TI-KFi9faGOoVKmK4C2lWwRUa8uRhD "Result of ResNet-GCN-1")
-![
-](https://lh3.googleusercontent.com/MYQKWZw64J6jiy_NnyHE6uLCiJc5K3PyEkOp_R4NHNB2o8ouwcSLLiOnlnWY4FqH-TnMtbEaXXMW "Result of ResNet-GCN-2")
+Mean IoU: `0.8313548250035635`  
+Mean Dice: `0.9072525421846304`  
+Mean Inv. Dice: `0.9705243499345569`
 
-![
-](https://lh3.googleusercontent.com/i-YMRZ1RfdjkAERnANisWkNsQAmiluiJ4eIVew0ykZ6jIPRtmIqh4wTzFAzts8h-MvJ6_LClaM4q "Result of ResNet-GCN-3")
+### Examples of output
+![enter image description here](https://lh3.googleusercontent.com/vChrY5LOaR7n0tVGjbQf9jblP4a6i8dYtWtk0nsueBIrtMwRq9xKYP0VemoqeCS9dntLBVYxqMZl)
+
+![enter image description here](https://lh3.googleusercontent.com/aLayT8QwUe_Rfu551P5-jFFQ1yjaoB5TD7k_FpPF0WANfy9dWYa4BJ8034Fkk5DjUIDCSYgoWJrH)
+
+![enter image description here](https://lh3.googleusercontent.com/GJ8FzDAPUDGe2McEgglm0XSGZVFQVlX6e5KxHR9QfuTgXdVtvzYmlRayoj7t74opHhQ3Jx17iJ5-)
+
 *The red boundary denotes the ground truth while the blue shaded portion is the predicted mask*
-*The red boundary denotes the ground truth while the blue shaded portion is the predicted mask*
+
 
 ### Observations
+
 - The GCN architecture is comparatively lightweight (in terms of GPU consumption)
  - The GCN architecture performs remarkably well for the task of lung segmentation even with very little training.
-- Further work has to be done to eliminate the connection near the sternum 
+- However, further work is required to achieve better performance. Type -1 error is particularly prevalent in the predictions
 
 ## References
 [[1]](https://arxiv.org/abs/1703.02719) Chao Peng, Xiangyu Zhang, Gang Yu, Guiming Luo, and Jian Sun. Large kernel matters - improve semantic segmentation by global convolutional network. CoRR, abs/1703.02719, 2017.
