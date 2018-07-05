@@ -103,13 +103,20 @@ As mentioned before, the Inverse dice index is obtained by inverting the masks a
 >Due to the relatively smaller area of lung compared to the background, Inverse Dice score is large for every model.
 
  ## Results 
+ 
+Mean IoU: `0.8324080228352543`
+Mean Dice: `0.9079911417885767`
+Mean Inv. Dice: `0.9709436709398065`
 
-Mean IoU: `0.8250503901469113`
-Mean Dice: `0.903462097829859`
-Mean Inv. Dice: `0.9696273306186287`
 
-![enter image description here](https://lh3.googleusercontent.com/Pb-Too9p17k0uKm2GGUw-5lyMPL8uX5HtUi81fpP12OmSbrNuxvQNzYbvX_91q31zM27Gddfd4bD "Result of ResNet-GCN")
+![
+](https://lh3.googleusercontent.com/REyIVFOEuD7Q3sUQxUm0UcjQT8t_n6qDPrxIULjb4m2pC1TI-KFi9faGOoVKmK4C2lWwRUa8uRhD "Result of ResNet-GCN-1")
+![
+](https://lh3.googleusercontent.com/MYQKWZw64J6jiy_NnyHE6uLCiJc5K3PyEkOp_R4NHNB2o8ouwcSLLiOnlnWY4FqH-TnMtbEaXXMW "Result of ResNet-GCN-2")
 
+![
+](https://lh3.googleusercontent.com/i-YMRZ1RfdjkAERnANisWkNsQAmiluiJ4eIVew0ykZ6jIPRtmIqh4wTzFAzts8h-MvJ6_LClaM4q "Result of ResNet-GCN-3")
+*The red boundary denotes the ground truth while the blue shaded portion is the predicted mask*
 *The red boundary denotes the ground truth while the blue shaded portion is the predicted mask*
 
 ### Observations
