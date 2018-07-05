@@ -62,8 +62,6 @@ This is calculated by passing the output of the network through a sigmoid activa
 
 > The sigmoid and cross entropy calculations  are done in one class to exploit the log-sum-exp trick for greater numerical stability (as compared to sequentially applying sigmoid activation and then using vanilla BCE).
 
-<!---$\ell(x, y) = L = \{l_1,\dots,l_N\}^\top$ --->
-
 $$l_n = - w_n \left[ t_n \cdot \log \sigma(x_n) + (1 - t_n) \cdot \log (1 - \sigma(x_n)) \right],$$
 
 $$ L(x,y) = \sum_{i=1}^{N}l_i$$
@@ -92,8 +90,6 @@ Inverse Dice loss checks for how accurately the background is masked. This penal
 	
 
 > P stands for Predicted Mask while GT is ground truth.
-<!--> The $\epsilon$ is added to ensure bounded ratios -->
-
    
    ### Dice Index
    The Dice index (also known as Sørensen–Dice similarity coefficient) has been discussed earlier. 
