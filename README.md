@@ -7,7 +7,7 @@
 Refer to [MeDAL-IITB's repo](https://github.com/MEDAL-IITB/Lung-Segmentation) for more
 
 GCN Architecture is proposed in the paper "Large Kernel Matters ——
-Improve Semantic Segmentation by Global Convolutional Network"[$^{[1]}$](https://arxiv.org/abs/1703.02719)
+Improve Semantic Segmentation by Global Convolutional Network"[[1]](https://arxiv.org/abs/1703.02719)
 
 A GCN based architecture, called ResNet-GCN, is used for the purposes of lung segmentation from chest x-rays.
 
