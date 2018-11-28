@@ -72,12 +72,16 @@ def train():
     cuda = torch.cuda.is_available()
     net = FCN_GCN(1)
     net.load_state_dict(torch.load('cp.pth'))
-
+    
+    criterion1 = nn.BCEWithLogitsLoss()
+    criterion2 = SoftDiceLoss()
+    criterion3 = SoftInvDiceLoss()
+        
     if cuda:
         net = net.cuda()
-    criterion1 = nn.BCEWithLogitsLoss().cuda()
-    criterion2 = SoftDiceLoss().cuda()
-    criterion3 = SoftInvDiceLoss().cuda()
+        criterion1 = criterion1.cuda()
+        criterion2 = criterion2.cuda()
+        criterion3 = criterion3.cuda()
 
     optimizer = torch.optim.Adam(net.parameters(), lr=4e-5)
     #scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[10,20], gamma=0.5)
